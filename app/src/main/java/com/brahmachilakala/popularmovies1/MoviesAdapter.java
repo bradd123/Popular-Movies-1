@@ -7,19 +7,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by brahma on 12/07/17.
  */
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
 
-//    private List<Movie> mMovies;
+    private List<Movie> mMovies;
+    private Context mContext;
 
-//    private List<String> mMovieNames;
-//    private Context mContext;
-
-    public MoviesAdapter() {
-
+    public MoviesAdapter(Context context, ArrayList<Movie> movies) {
+        mContext = context;
+        mMovies = movies;
     }
 
     @Override
@@ -35,9 +39,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-//        Movie movie = mMovies.get(position);
+        Movie movie = mMovies.get(position);
 
-        holder.movieImageView.setImageResource(R.drawable.happydog);
+//        holder.movieImageView.setImageResource(R.drawable.happydog);
+
+        Picasso.with(mContext).load(movie.getImageUrl()).into(holder.movieImageView);
 
     }
 
