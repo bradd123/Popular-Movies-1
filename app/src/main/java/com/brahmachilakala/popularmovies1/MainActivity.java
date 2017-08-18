@@ -1,6 +1,7 @@
 package com.brahmachilakala.popularmovies1;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -9,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,6 +38,26 @@ public class MainActivity extends AppCompatActivity {
         if (isNetworkAvailable()) {
             new GetMoviesTask().execute("https://api.themoviedb.org/3/discover/movie?api_key=3afb8ecfbf45f15fa5dc9463f48976ed&sort_by=popularity.desc");
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.settings_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            Intent settingsActivity = new Intent(this, SettingsActivity.class);
+            startActivity(settingsActivity);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private class GetMoviesTask extends AsyncTask<String, Void, String> {
