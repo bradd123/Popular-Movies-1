@@ -1,5 +1,8 @@
 package com.brahmachilakala.popularmovies1;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new GetMoviesTask().execute("https://api.themoviedb.org/3/discover/movie?api_key=3afb8ecfbf45f15fa5dc9463f48976ed&sort_by=popularity.desc");
+        if (isNetworkAvailable()) {
+            new GetMoviesTask().execute("https://api.themoviedb.org/3/discover/movie?api_key=3afb8ecfbf45f15fa5dc9463f48976ed&sort_by=popularity.desc");
+        }
     }
 
     private class GetMoviesTask extends AsyncTask<String, Void, String> {
@@ -87,5 +92,11 @@ public class MainActivity extends AppCompatActivity {
         rvMovies.setAdapter(rvAdapter);
 
         rvMovies.setLayoutManager(new GridLayoutManager(this, 2));
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }
