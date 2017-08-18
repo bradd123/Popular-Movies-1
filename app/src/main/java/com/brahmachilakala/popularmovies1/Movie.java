@@ -1,39 +1,33 @@
 package com.brahmachilakala.popularmovies1;
 
-import android.content.Context;
-import android.widget.ImageView;
-
-import java.util.ArrayList;
-
 /**
  * Created by brahma on 12/07/17.
  */
 
 public class Movie {
-    private ImageView mMovieImageView;
+    private String originalTitle;
+    private String imageUrl;
+    private String overview;
+    private String userRating;
+    private String releaseDate;
 
-    public Movie(ImageView imageView) {
-        mMovieImageView = imageView;
+    public String getOriginalTitle() {
+        return originalTitle;
     }
 
-    public ImageView getMovieImage() {
-        return mMovieImageView;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setMovieImage(ImageView imageView) {
-        mMovieImageView = imageView;
+    public String getOverview() {
+        return overview;
     }
 
-    public static ArrayList<Movie> createMovieList(int number, Context context) {
-        ImageView image = new ImageView(context);
-        image.setImageResource(R.drawable.happydog);
+    public String getUserRating() {
+        return userRating;
+    }
 
-        ArrayList<Movie> movieList = new ArrayList<>();
-
-        for(int i=0; i<number; i++) {
-            Movie movie = new Movie(image);
-            movieList.add(movie);
-        }
-        return movieList;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 }
