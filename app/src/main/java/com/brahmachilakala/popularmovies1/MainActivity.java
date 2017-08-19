@@ -2,11 +2,13 @@ package com.brahmachilakala.popularmovies1;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,20 +26,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     ArrayList<Movie> movies;
     RecyclerView rvMovies;
     MoviesAdapter rvAdapter;
+
+    String sortOrder = "popular";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (isNetworkAvailable()) {
-            new GetMoviesTask().execute("https://api.themoviedb.org/3/discover/movie?api_key=3afb8ecfbf45f15fa5dc9463f48976ed&sort_by=popularity.desc");
-        }
+        setupSharedPreferences();
     }
 
     @Override
@@ -58,6 +60,43 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupSharedPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        sortOrder = sharedPreferences.getString("sort_order", "popular");
+
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
+        loadMovies();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        if (s.equals("sort_order")) {
+            sortOrder = sharedPreferences.getString("sort_order", "popular");
+        }
+
+        loadMovies();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    private void loadMovies() {
+
+        if (isNetworkAvailable()) {
+
+            if (sortOrder.equals("popular")) {
+                new GetMoviesTask().execute("https://api.themoviedb.org/3/movie/popular?api_key=3afb8ecfbf45f15fa5dc9463f48976ed");
+            } else {
+                new GetMoviesTask().execute("https://api.themoviedb.org/3/movie/top_rated?api_key=3afb8ecfbf45f15fa5dc9463f48976ed");
+            }
+        }
     }
 
     private class GetMoviesTask extends AsyncTask<String, Void, String> {
