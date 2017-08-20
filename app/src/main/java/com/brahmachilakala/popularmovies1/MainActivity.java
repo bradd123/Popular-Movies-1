@@ -18,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -176,7 +175,19 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 if (childView != null && mGestureDetector.onTouchEvent(e)) {
                     int position = rv.getChildAdapterPosition(childView);
 
-                    Toast.makeText(MainActivity.this, "Clicked the item at position " + position, Toast.LENGTH_SHORT).show();
+                    Movie movie = movies.get(position);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", movie.getId());
+                    bundle.putString("original_title", movie.getOriginalTitle());
+                    bundle.putString("image_url", movie.getImageUrl());
+                    bundle.putString("overview", movie.getOverview());
+                    bundle.putString("user_rating", movie.getUserRating());
+                    bundle.putString("release_date", movie.getReleaseDate());
+
+                    Intent detailActivity = new Intent(MainActivity.this, DetailActivity.class);
+                    detailActivity.putExtras(bundle);
+                    startActivity(detailActivity);
 
                     return true;
                 }
