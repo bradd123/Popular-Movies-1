@@ -25,5 +25,7 @@ public class DetailActivity extends AppCompatActivity {
         tvMovieDuration = (TextView) findViewById(R.id.tv_movie_duration);
         tvMovieRating = (TextView) findViewById(R.id.tv_movie_rating);
         btFavorite = (TextView) findViewById(R.id.bt_favorite);
+
+
     }
 }

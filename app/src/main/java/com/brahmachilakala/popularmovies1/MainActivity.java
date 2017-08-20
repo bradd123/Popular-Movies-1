@@ -177,16 +177,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                     Movie movie = movies.get(position);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("id", movie.getId());
-                    bundle.putString("original_title", movie.getOriginalTitle());
-                    bundle.putString("image_url", movie.getImageUrl());
-                    bundle.putString("overview", movie.getOverview());
-                    bundle.putString("user_rating", movie.getUserRating());
-                    bundle.putString("release_date", movie.getReleaseDate());
-
                     Intent detailActivity = new Intent(MainActivity.this, DetailActivity.class);
-                    detailActivity.putExtras(bundle);
+                    detailActivity.putExtra("id", movie.getId());
+                    detailActivity.putExtra("original_title", movie.getOriginalTitle());
+                    detailActivity.putExtra("image_url", movie.getImageUrl());
+                    detailActivity.putExtra("overview", movie.getOverview());
+                    detailActivity.putExtra("user_rating", movie.getUserRating());
+                    detailActivity.putExtra("release_date", movie.getReleaseDate());
                     startActivity(detailActivity);
 
                     return true;
