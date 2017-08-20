@@ -12,9 +12,13 @@ import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     ArrayList<Movie> movies;
     RecyclerView rvMovies;
     MoviesAdapter rvAdapter;
+    GestureDetector mGestureDetector;
 
     String sortOrder = "popular";
 
@@ -155,6 +160,39 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         rvMovies.setAdapter(rvAdapter);
 
         rvMovies.setLayoutManager(new GridLayoutManager(this, 2));
+
+        mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+        });
+
+        rvMovies.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                View childView = rv.findChildViewUnder(e.getX(), e.getY());
+
+                if (childView != null && mGestureDetector.onTouchEvent(e)) {
+                    int position = rv.getChildAdapterPosition(childView);
+
+                    Toast.makeText(MainActivity.this, "Clicked the item at position " + position, Toast.LENGTH_SHORT).show();
+
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
     }
 
     private boolean isNetworkAvailable() {
