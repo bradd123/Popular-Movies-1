@@ -96,9 +96,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if (isNetworkAvailable()) {
 
             if (sortOrder.equals("popular")) {
-                new GetMoviesTask().execute("https://api.themoviedb.org/3/movie/popular?api_key=3afb8ecfbf45f15fa5dc9463f48976ed");
+                new GetMoviesTask().execute("https://api.themoviedb.org/3/movie/popular?api_key=ENTER_API_KEY_HERE");
             } else {
-                new GetMoviesTask().execute("https://api.themoviedb.org/3/movie/top_rated?api_key=3afb8ecfbf45f15fa5dc9463f48976ed");
+                new GetMoviesTask().execute("https://api.themoviedb.org/3/movie/top_rated?api_key=ENTER_API_KEY_HERE");
             }
         }
     }
